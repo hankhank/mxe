@@ -3,15 +3,15 @@
 
 PKG             := libusb1
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.0.17
-$(PKG)_CHECKSUM := a491054e7f4f3f52b12bd567335180586a54ae16
-$(PKG)_SUBDIR   := libusbx-$($(PKG)_VERSION)
-$(PKG)_FILE     := libusbx-$($(PKG)_VERSION).tar.bz2
-$(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/libusbx/releases/$($(PKG)_VERSION)/source/$($(PKG)_FILE)
+$(PKG)_VERSION  := 1.0.18
+$(PKG)_CHECKSUM := 5f7bbf42a4d6e6b88d5e7666958c80f8455ee915
+$(PKG)_SUBDIR   := libusb-$($(PKG)_VERSION)
+$(PKG)_FILE     := libusb-$($(PKG)_VERSION).tar.bz2
+$(PKG)_URL      := http://$(SOURCEFORGE_MIRROR)/project/libusb/libusb-1.0/libusb-$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc
 
 define $(PKG)_UPDATE
-    $(WGET) -q -O- 'http://sourceforge.net/projects/libusbx/files/releases/' | \
+    $(WGET) -q -O- 'http://sourceforge.net/projects/libusb/files/releases/' | \
     $(SED) -n 's,.*/\([0-9][^"]*\)/".*,\1,p' | \
     head -1
 endef
