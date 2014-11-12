@@ -8,7 +8,7 @@ $(PKG)_CHECKSUM := 288a9e6dc37345a2d4794baee342f10c0617f160
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).zip
 $(PKG)_URL      := 
-$(PKG)_DEPS     := 
+$(PKG)_DEPS     := gcc libusb1
 
 define $(PKG)_BUILD
     cd $(1) && $(INSTALL) include/* $(PREFIX)/$(TARGET)/include && \
