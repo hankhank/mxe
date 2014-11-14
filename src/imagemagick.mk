@@ -3,12 +3,12 @@
 
 PKG             := imagemagick
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 6.8.7-8
-$(PKG)_CHECKSUM := 0c6e97ac80dcd496df378336676165a4546f659c
+$(PKG)_VERSION  := 6.8.8-3
+$(PKG)_CHECKSUM := 8e69b64ee1fc9f9131abbc4bf38d9c27ab60ebce
 $(PKG)_SUBDIR   := ImageMagick-$($(PKG)_VERSION)
 $(PKG)_FILE     := ImageMagick-$($(PKG)_VERSION).tar.xz
-$(PKG)_URL      := http://www.imagemagick.org/download/$($(PKG)_FILE)
-$(PKG)_URL_2    := http://ftp.nluug.nl/ImageMagick/$($(PKG)_FILE)
+$(PKG)_URL      := http://www.imagemagick.org/download/releases/$($(PKG)_FILE)
+$(PKG)_URL_2    := http://ftp.sunet.se/pub/multimedia/graphics/ImageMagick/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc bzip2 ffmpeg fftw freetype jasper jpeg lcms liblqr-1 libpng libltdl openexr pthreads tiff
 
 define $(PKG)_UPDATE
@@ -40,3 +40,5 @@ define $(PKG)_BUILD
 endef
 
 $(PKG)_BUILD_x86_64-w64-mingw32 =
+
+$(PKG)_BUILD_SHARED =

@@ -3,8 +3,8 @@
 
 PKG             := libgsf
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.14.28
-$(PKG)_CHECKSUM := 6e361410a8922bd5970add23398868abab47608f
+$(PKG)_VERSION  := 1.14.30
+$(PKG)_CHECKSUM := 5eb15d574c6b9e9c5e63bbcdff8f866b3544485a
 $(PKG)_SUBDIR   := libgsf-$($(PKG)_VERSION)
 $(PKG)_FILE     := libgsf-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := http://ftp.gnome.org/pub/gnome/sources/libgsf/$(call SHORT_PKG_VERSION,$(PKG))/$($(PKG)_FILE)
@@ -22,10 +22,7 @@ define $(PKG)_BUILD
     $(SED) -i 's,^\(Requires:.*\),\1 gio-2.0,' '$(1)'/libgsf-1.pc.in
     echo 'Libs.private: -lz -lbz2'          >> '$(1)'/libgsf-1.pc.in
     cd '$(1)' && ./configure \
-        --host='$(TARGET)' \
-        --build="`config.guess`" \
-        --disable-shared \
-        --prefix='$(PREFIX)/$(TARGET)' \
+        $(MXE_CONFIGURE_OPTS) \
         --disable-nls \
         --disable-gtk-doc \
         --without-python \

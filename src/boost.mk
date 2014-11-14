@@ -22,7 +22,7 @@ define $(PKG)_BUILD
     rm -r '$(1)/libs/context'
     # old version appears to interfere
     rm -rf '$(PREFIX)/$(TARGET)/include/boost/'
-    echo 'using gcc : : $(TARGET)-g++ : <rc>$(TARGET)-windres <archiver>$(TARGET)-ar ;' > '$(1)/user-config.jam'
+    echo 'using gcc : : $(TARGET)-g++ : <rc>$(TARGET)-windres <archiver>$(TARGET)-ar <ranlib>$(TARGET)-ranlib ;' > '$(1)/user-config.jam'
     # compile boost jam
     cd '$(1)/tools/build/v2/engine' && ./build.sh
     cd '$(1)' && tools/build/v2/engine/bin.*/bjam \
@@ -31,9 +31,10 @@ define $(PKG)_BUILD
         --user-config=user-config.jam \
         target-os=windows \
         threading=multi \
-        link=static \
+        link=$(if $(BUILD_STATIC),static,shared) \
         threadapi=win32 \
         --layout=tagged \
+        --disable-icu \
         --without-mpi \
         --without-python \
         --prefix='$(PREFIX)/$(TARGET)' \
@@ -43,6 +44,9 @@ define $(PKG)_BUILD
         -sEXPAT_INCLUDE='$(PREFIX)/$(TARGET)/include' \
         -sEXPAT_LIBPATH='$(PREFIX)/$(TARGET)/lib' \
         stage install
+
+    $(if $(BUILD_SHARED), \
+        mv -fv '$(PREFIX)/$(TARGET)/lib/'libboost_*.dll '$(PREFIX)/$(TARGET)/bin/')
 
     '$(TARGET)-g++' \
         -W -Wall -Werror -ansi -U__STRICT_ANSI__ -pedantic \

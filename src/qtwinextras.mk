@@ -4,7 +4,7 @@
 PKG             := qtwinextras
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_CHECKSUM := a2f77bd69666dedfb41402ab8ffb6f7c52673ad1
+$(PKG)_CHECKSUM := 49bf07406f6c79217314158bf707ba651800557b
 $(PKG)_SUBDIR    = $(subst qtbase,qtwinextras,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtwinextras,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtwinextras,$(qtbase_URL))
@@ -20,4 +20,3 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(1)' -j 1 install
 endef
 
-$(PKG)_BUILD_i686-pc-mingw32 =

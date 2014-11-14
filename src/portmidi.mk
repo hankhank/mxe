@@ -20,15 +20,19 @@ endef
 define $(PKG)_BUILD
     mkdir '$(1)/build'
     cd '$(1)/build' && cmake .. \
-        -DCMAKE_TOOLCHAIN_FILE='$(CMAKE_TOOLCHAIN_FILE)' \
-        -DLIBTYPE=STATIC
+        -DCMAKE_TOOLCHAIN_FILE='$(CMAKE_TOOLCHAIN_FILE)'
 
-    $(MAKE) -C '$(1)/build' -j '$(JOBS)' portmidi-static
+    $(MAKE) -C '$(1)/build' -j '$(JOBS)' portmidi-$(if $(BUILD_STATIC),static,dynamic)
 
     # install library files
     $(INSTALL) -d '$(PREFIX)/$(TARGET)/lib'
-    $(INSTALL) -m644 '$(1)/build/libportmidi_s.a' \
-                     '$(PREFIX)/$(TARGET)/lib/libportmidi.a'
+    $(if $(BUILD_STATIC),                                             \
+        $(INSTALL) -m644 '$(1)/build/libportmidi_s.a'                 \
+                         '$(PREFIX)/$(TARGET)/lib/libportmidi.a',     \
+        $(INSTALL) -m755 '$(1)/build/libportmidi.dll'                 \
+                         '$(PREFIX)/$(TARGET)/bin/libportmidi.dll' && \
+        $(INSTALL) -m644 '$(1)/build/libportmidi.dll.a'               \
+                         '$(PREFIX)/$(TARGET)/lib/libportmidi.dll.a')
 
     # install include files
     $(INSTALL) -d                                '$(PREFIX)/$(TARGET)/include'

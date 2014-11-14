@@ -4,7 +4,7 @@
 PKG             := qtquickcontrols
 $(PKG)_IGNORE   :=
 $(PKG)_VERSION   = $(qtbase_VERSION)
-$(PKG)_CHECKSUM := c0ed05af06a89074f330814c397815a0acaf8042
+$(PKG)_CHECKSUM := db761fa235253f4eac3d2c0fce734ffa667d739a
 $(PKG)_SUBDIR    = $(subst qtbase,qtquickcontrols,$(qtbase_SUBDIR))
 $(PKG)_FILE      = $(subst qtbase,qtquickcontrols,$(qtbase_FILE))
 $(PKG)_URL       = $(subst qtbase,qtquickcontrols,$(qtbase_URL))
@@ -19,3 +19,4 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(1)' -j '$(JOBS)'
     $(MAKE) -C '$(1)' -j 1 install
 endef
+

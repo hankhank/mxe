@@ -18,9 +18,7 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && ./configure \
-        --host='$(TARGET)' \
-        --disable-shared \
-        --prefix='$(PREFIX)/$(TARGET)' \
+        $(MXE_CONFIGURE_OPTS) \
         --with-sdl-prefix='$(PREFIX)/$(TARGET)' \
         --disable-sdltest \
         --disable-gui
@@ -33,4 +31,3 @@ define $(PKG)_BUILD
         -lws2_32 -liphlpapi
 endef
 
-$(PKG)_BUILD_i686-pc-mingw32 =

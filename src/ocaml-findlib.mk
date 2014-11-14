@@ -13,7 +13,7 @@ $(PKG)_DEPS     := gcc ocaml-core
 define $(PKG)_UPDATE
     $(WGET) -q -O- 'http://download.camlcity.org/download' | \
     $(SED) -n 's,.*findlib-\([0-9][^>]*\)\.tar.*,\1,ip' | \
-    sort | \
+    $(SORT) | \
     tail -1
 endef
 
@@ -57,3 +57,5 @@ define $(PKG)_BUILD
 endef
 
 $(PKG)_BUILD_x86_64-w64-mingw32 =
+
+$(PKG)_BUILD_SHARED =

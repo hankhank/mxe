@@ -3,8 +3,8 @@
 
 PKG             := poppler
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 0.24.5
-$(PKG)_CHECKSUM := 7b7cabee85bd81a7e55c939740d5d7ccd7c0dda5
+$(PKG)_VERSION  := 0.26.4
+$(PKG)_CHECKSUM := 26ff3310cb4866829030c73070df4ae9aa4f6cac
 $(PKG)_SUBDIR   := poppler-$($(PKG)_VERSION)
 $(PKG)_FILE     := poppler-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := http://poppler.freedesktop.org/$($(PKG)_FILE)
@@ -51,7 +51,7 @@ define $(PKG)_BUILD
         --disable-gtk-doc-html \
         --disable-gtk-doc-pdf \
         --with-font-configuration=win32 \
-        PKG_CONFIG_PATH_$(subst -,_,$(TARGET))='$(PREFIX)/$(TARGET)/qt/lib/pkgconfig' \
+        PKG_CONFIG_PATH_$(subst .,_,$(subst -,_,$(TARGET)))='$(PREFIX)/$(TARGET)/qt/lib/pkgconfig' \
         CXXFLAGS=-D_WIN32_WINNT=0x0500 \
         LIBTIFF_LIBS="`'$(TARGET)-pkg-config' libtiff-4 --libs`"
     PATH='$(PREFIX)/$(TARGET)/qt/bin:$(PATH)' \
@@ -64,4 +64,6 @@ define $(PKG)_BUILD
         '$(2).cxx' -o '$(PREFIX)/$(TARGET)/bin/test-poppler.exe' \
         `'$(TARGET)-pkg-config' poppler poppler-cpp --cflags --libs`
 endef
+
+$(PKG)_BUILD_SHARED =
 

@@ -3,11 +3,11 @@
 
 PKG             := qt
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 4.8.5
-$(PKG)_CHECKSUM := 745f9ebf091696c0d5403ce691dc28c039d77b9e
+$(PKG)_VERSION  := 4.8.6
+$(PKG)_CHECKSUM := ddf9c20ca8309a116e0466c42984238009525da6
 $(PKG)_SUBDIR   := $(PKG)-everywhere-opensource-src-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-everywhere-opensource-src-$($(PKG)_VERSION).tar.gz
-$(PKG)_URL      := http://download.qt-project.org/official_releases/qt/4.8/$($(PKG)_VERSION)/$($(PKG)_FILE)
+$(PKG)_URL      := http://download.qt-project.org/archive/qt/4.8/$($(PKG)_VERSION)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc postgresql freetds openssl zlib libpng jpeg libmng tiff sqlite dbus
 
 define $(PKG)_UPDATE
@@ -69,10 +69,24 @@ define $(PKG)_BUILD
     $(MAKE) -C '$(1)' -j '$(JOBS)'
     rm -rf '$(PREFIX)/$(TARGET)/qt'
     $(MAKE) -C '$(1)' -j 1 install
+    ln -sf '$(PREFIX)/$(TARGET)/qt/bin/qmake' '$(PREFIX)/bin/$(TARGET)'-qmake-qt4
+
+    # lrelease (from linguist) needed to prepare translation files
+    $(MAKE) -C '$(1)/tools/linguist/lrelease' -j '$(JOBS)' install
+    ln -fs '$(PREFIX)/$(TARGET)/bin/lrelease' '$(PREFIX)/bin/$(TARGET)-lrelease'
 
     cd '$(1)/tools/assistant' && '$(1)/bin/qmake' assistant.pro
+    # can't figure out where -lQtCLucene comes from so use
+    # sed on the output instead of patching the input
+    $(MAKE) -C '$(1)/tools/assistant' sub-lib-qmake_all
+    $(SED) -i 's,-lQtCLucene$$,-lQtCLucene4,' '$(1)/tools/assistant/lib/Makefile.Release'
     $(MAKE) -C '$(1)/tools/assistant' -j '$(JOBS)' install
 
+    # likewise for these two
+    cd '$(1)/tools/designer/src/designer' && '$(1)/bin/qmake' designer.pro
+    $(if $(BUILD_SHARED),\
+        $(SED) -i 's/-lQtDesignerComponents /-lQtDesignerComponents4 /' '$(1)/tools/designer/src/designer/Makefile.Release' && \
+        $(SED) -i 's/-lQtDesigner /-lQtDesigner4 /'                     '$(1)/tools/designer/src/designer/Makefile.Release',)
     cd '$(1)/tools/designer' && '$(1)/bin/qmake' designer.pro
     $(MAKE) -C '$(1)/tools/designer' -j '$(JOBS)' install
 
@@ -97,3 +111,8 @@ define $(PKG)_BUILD
         -I'$(1)/test-$(PKG)-pkgconfig' \
         `'$(TARGET)-pkg-config' QtGui --cflags --libs`
 endef
+
+$(PKG)_BUILD_SHARED = $(subst -static ,-shared ,\
+                      $(subst -no-webkit ,-webkit ,\
+                      $(subst -qt-sql-,-plugin-sql-,\
+                      $($(PKG)_BUILD))))

@@ -7,7 +7,8 @@ $(PKG)_VERSION  := 0.91
 $(PKG)_CHECKSUM := 3ab06c8e208e82197dc25d09ae353d9f3be7db52
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
-$(PKG)_URL      := ftp://ftp.freetds.org/pub/$(PKG)/stable/$($(PKG)_FILE)
+$(PKG)_URL      := http://ftp.mirrorservice.org/sites/distfiles.finkmirrors.net/sha1/$($(PKG)_CHECKSUM)/$($(PKG)_FILE)
+$(PKG)_URL_2    := ftp://ftp.freetds.org/pub/$(PKG)/stable/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc libiconv gnutls
 
 define $(PKG)_UPDATE
@@ -24,13 +25,9 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && ./configure \
-        --prefix='$(PREFIX)/$(TARGET)' \
-        --host='$(TARGET)' \
-        --build="`config.guess`" \
+        $(MXE_CONFIGURE_OPTS) \
         --disable-rpath \
         --disable-dependency-tracking \
-        --disable-shared \
-        --enable-static \
         --enable-libiconv \
         --enable-msdblib \
         --enable-sspi \

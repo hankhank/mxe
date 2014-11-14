@@ -31,9 +31,9 @@ define $(PKG)_BUILD
         --without-threads \
         scm_cv_struct_timespec=no \
         LIBS='-lunistring -lintl -liconv -ldl' \
-        CFLAGS='-Wno-unused-but-set-variable'
-    $(MAKE) -C '$(1)' -j '$(JOBS)' schemelib_DATA=
-    $(MAKE) -C '$(1)' -j 1 install schemelib_DATA=
+        CFLAGS='-Wno-unused-but-set-variable -Wno-unused-value'
+    $(MAKE) -C '$(1)' -j '$(JOBS)' $(MXE_DISABLE_CRUFT) schemelib_DATA=
+    $(MAKE) -C '$(1)' -j 1 install $(MXE_DISABLE_CRUFT) schemelib_DATA=
 
     '$(TARGET)-gcc' \
         -W -Wall -Werror -ansi -pedantic \
@@ -43,4 +43,5 @@ define $(PKG)_BUILD
 endef
 
 $(PKG)_BUILD_x86_64-w64-mingw32 =
-$(PKG)_BUILD_i686-w64-mingw32 =
+
+$(PKG)_BUILD_SHARED =

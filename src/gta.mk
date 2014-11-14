@@ -3,8 +3,8 @@
 
 PKG             := gta
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.0.4
-$(PKG)_CHECKSUM := 867614e47edcae96fa5d89b2fd154539d8be644a
+$(PKG)_VERSION  := 1.0.5
+$(PKG)_CHECKSUM := 7fdca4a37c6f1617952c69b5aac370fed2f00e41
 $(PKG)_SUBDIR   := libgta-$($(PKG)_VERSION)
 $(PKG)_FILE     := libgta-$($(PKG)_VERSION).tar.xz
 $(PKG)_URL      := http://download.savannah.gnu.org/releases/gta/$($(PKG)_FILE)
@@ -19,11 +19,8 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && ./configure \
-        --host='$(TARGET)' \
-        --build="`config.guess`" \
-        --disable-shared \
-        --disable-reference \
-        --prefix='$(PREFIX)/$(TARGET)'
+        $(MXE_CONFIGURE_OPTS) \
+        --disable-reference
     $(MAKE) -C '$(1)' -j '$(JOBS)'
     $(MAKE) -C '$(1)' -j 1 install dist_doc_DATA=
 
@@ -32,3 +29,4 @@ define $(PKG)_BUILD
         '$(2).c' -o '$(PREFIX)/$(TARGET)/bin/test-gta.exe' \
         `'$(TARGET)-pkg-config' gta --cflags --libs`
 endef
+

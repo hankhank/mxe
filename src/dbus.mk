@@ -3,8 +3,8 @@
 
 PKG             := dbus
 $(PKG)_IGNORE   :=
-$(PKG)_VERSION  := 1.7.10
-$(PKG)_CHECKSUM := a5dcaf9833a406ed7dd7e98df2a3e940939bb27b
+$(PKG)_VERSION  := 1.9.2
+$(PKG)_CHECKSUM := b9f73b3425cc20014467bfe671826faf480f4d59
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
 $(PKG)_URL      := http://$(PKG).freedesktop.org/releases/$(PKG)/$($(PKG)_FILE)
@@ -19,20 +19,15 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && ./configure \
-        --host='$(TARGET)' \
-        --build="`config.guess`" \
-        --prefix='$(PREFIX)/$(TARGET)' \
-        --with-xml=expat \
+        $(MXE_CONFIGURE_OPTS) \
         --disable-tests \
         --disable-verbose-mode \
         --disable-asserts \
-        --disable-shared \
         --disable-maintainer-mode \
-        --enable-static \
         --disable-silent-rules \
         --disable-launchd \
         --disable-doxygen-docs \
-        --disable-xml--docs \
+        --disable-xml-docs \
         CFLAGS='-DPROCESS_QUERY_LIMITED_INFORMATION=0x1000'
     $(MAKE) -C '$(1)' -j '$(JOBS)' install
 endef

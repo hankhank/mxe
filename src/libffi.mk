@@ -7,7 +7,8 @@ $(PKG)_VERSION  := 3.0.13
 $(PKG)_CHECKSUM := f5230890dc0be42fb5c58fbf793da253155de106
 $(PKG)_SUBDIR   := $(PKG)-$($(PKG)_VERSION)
 $(PKG)_FILE     := $(PKG)-$($(PKG)_VERSION).tar.gz
-$(PKG)_URL      := ftp://sourceware.org/pub/$(PKG)/$($(PKG)_FILE)
+$(PKG)_URL      := http://www.mirrorservice.org/sites/sourceware.org/pub/$(PKG)/$($(PKG)_FILE)
+$(PKG)_URL_2    := ftp://sourceware.org/pub/$(PKG)/$($(PKG)_FILE)
 $(PKG)_DEPS     := gcc
 
 define $(PKG)_UPDATE
@@ -19,9 +20,7 @@ endef
 
 define $(PKG)_BUILD
     cd '$(1)' && ./configure \
-        --host='$(TARGET)' \
-        --prefix='$(PREFIX)/$(TARGET)' \
-        --disable-shared
+        $(MXE_CONFIGURE_OPTS)
     $(MAKE) -C '$(1)/$(TARGET)' -j '$(JOBS)'
     $(MAKE) -C '$(1)/$(TARGET)' -j 1 install
 
