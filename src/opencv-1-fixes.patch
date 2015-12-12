@@ -206,3 +206,54 @@ index 4f6415c..ea1ed15 100644
 +Libs.private: -luuid -loleaut32
  Cflags: -I${includedir_old} -I${includedir_new}
 
+diff --git a/modules/highgui/src/precomp.hpp b/modules/highgui/src/precomp.hpp
+index 88ba8e4..af5383b 100644
+--- a/modules/highgui/src/precomp.hpp
++++ b/modules/highgui/src/precomp.hpp
+@@ -57,6 +57,14 @@
+ #include <assert.h>
+ 
+ #if defined WIN32 || defined WINCE
++    #if !defined _WIN32_WINNT
++        #ifdef HAVE_MSMF
++            #define _WIN32_WINNT 0x0600 // Windows Vista
++        #else
++            #define _WIN32_WINNT 0x0500 // Windows 2000
++        #endif
++    #endif
++
+     #include <windows.h>
+     #undef small
+     #undef min
+diff --git a/modules/highgui/src/window_w32.cpp b/modules/highgui/src/window_w32.cpp
+index 7b78ebc..59d66b1 100644
+--- a/modules/highgui/src/window_w32.cpp
++++ b/modules/highgui/src/window_w32.cpp
+@@ -43,27 +43,11 @@
+ 
+ #if defined WIN32 || defined _WIN32
+ 
+-#define COMPILE_MULTIMON_STUBS // Required for multi-monitor support
+-#ifndef _MULTIMON_USE_SECURE_CRT
+-#  define _MULTIMON_USE_SECURE_CRT 0 // some MinGW platforms have no strncpy_s
+-#endif
+-
+-#if defined SM_CMONITORS && !defined MONITOR_DEFAULTTONEAREST
+-#  define MONITOR_DEFAULTTONULL       0x00000000
+-#  define MONITOR_DEFAULTTOPRIMARY    0x00000001
+-#  define MONITOR_DEFAULTTONEAREST    0x00000002
+-#  define MONITORINFOF_PRIMARY        0x00000001
+-#endif
+-#ifndef __inout
+-#  define __inout
+-#endif
+-
+ #ifdef __GNUC__
+ #  pragma GCC diagnostic ignored "-Wmissing-declarations"
+ #endif
+ 
+ #include <commctrl.h>
+-#include <winuser.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <stdio.h>
