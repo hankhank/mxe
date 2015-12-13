@@ -50,6 +50,20 @@ diff -ur a/modules/highgui/src/window_w32.cpp b/modules/highgui/src/window_w32.c
  #endif
  
  static const char* trackbar_text =
+--- a/modules/highgui/CMakeLists.txt	2013-12-28 04:09:18.000000000 +1100
++++ b/modules/highgui/CMakeLists.txt	2014-01-05 21:23:48.318950096 +1100
+@@ -300,8 +300,9 @@
+     set(FFMPEG_SUFFIX _64)
+   endif()
+ 
+-  set(ffmpeg_bare_name "opencv_ffmpeg${FFMPEG_SUFFIX}.dll")
+-  set(ffmpeg_bare_name_ver "opencv_ffmpeg${OPENCV_DLLVERSION}${FFMPEG_SUFFIX}.dll")
++  set(DLLVERSION "${OPENCV_VERSION_MAJOR}${OPENCV_VERSION_MINOR}${OPENCV_VERSION_PATCH}")
++  set(ffmpeg_bare_name "opencv_ffmpeg.dll")
++  set(ffmpeg_bare_name_ver "opencv_ffmpeg${DLLVERSION}.dll")
+   set(ffmpeg_path "${OpenCV_SOURCE_DIR}/3rdparty/ffmpeg/${ffmpeg_bare_name}")
+ 
+   #if(MSVC AND CMAKE_VERSION VERSION_GREATER "2.8.2")
 
 diff -ur a/cmake/OpenCVFindLibsVideo.cmake b/cmake/OpenCVFindLibsVideo.cmake
 --- a/cmake/OpenCVFindLibsVideo.cmake	2013-12-28 04:09:18.000000000 +1100
