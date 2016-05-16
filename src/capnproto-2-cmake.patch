@@ -1,0 +1,16 @@
+diff -ur a/capnproto-c++-0.5.3/src/kj/CMakeLists.txt b/capnproto-c++-0.5.3/src/kj/CMakeLists.txt
+--- a/capnproto-c++-0.5.3/src/kj/CMakeLists.txt	2015-03-06 06:09:28.000000000 +1100
++++ b/capnproto-c++-0.5.3/src/kj/CMakeLists.txt	2016-05-16 21:35:11.961197864 +1000
+@@ -76,12 +76,6 @@
+   async-io.h
+   time.h
+ )
+-if(NOT CAPNP_LITE)
+-  add_library(kj-async ${kj-async_sources})
+-  target_link_libraries(kj-async kj)
+-  install(TARGETS kj-async ARCHIVE DESTINATION "${LIB_INSTALL_DIR}")
+-  install(FILES ${kj-async_headers} DESTINATION "${INCLUDE_INSTALL_DIR}/kj")
+-endif()
+ 
+ # Tests ========================================================================
+ 

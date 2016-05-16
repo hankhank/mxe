@@ -1,0 +1,12 @@
+diff -ur a/capnproto-c++-0.5.3/src/kj/debug.c++ b/capnproto-c++-0.5.3/src/kj/debug.c++
+--- a/capnproto-c++-0.5.3/src/kj/debug.c++	2015-03-06 06:09:28.000000000 +1100
++++ b/capnproto-c++-0.5.3/src/kj/debug.c++	2016-05-14 13:04:47.734027419 +1000
+@@ -26,7 +26,7 @@
+ #include <errno.h>
+ 
+ #if _WIN32
+-#define strerror_r(errno,buf,len) strerror_s(buf,len,errno)
++#define strerror_r(errno,buf,len) strerror(errno)
+ #endif
+ 
+ namespace kj {
